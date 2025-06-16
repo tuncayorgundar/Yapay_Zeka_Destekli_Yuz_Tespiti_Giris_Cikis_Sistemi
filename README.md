@@ -35,7 +35,8 @@ Bu proje, gerçek zamanlı olarak çalışan, yapay zeka tabanlı bir **yüz tan
 ## 🛠️ Sistem Mimarisi
 
 1. **YOLOv8 Tabanlı Yüz Tespiti:**
-   - `face-det-fwsp` veri setiyle YOLOv8n modeli eğitildi.
+   - Roboflowdan alınan public olarak yayınlanmış birden fazla insanın farklı ışık ortamlarındaki
+yüz görüntülerini içeren veri seti ile YOLOv8n modeli eğitildi.
    - Tespit edilen yüzler kırpılarak tanıma sistemine gönderilir.
 
 2. **Yüz Tanıma:**
