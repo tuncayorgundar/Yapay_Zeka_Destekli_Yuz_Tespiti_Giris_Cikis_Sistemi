@@ -1,57 +1,46 @@
-# Yapay_Zeka_Destekli_Yuz_Tespiti_Giris_Cikis_Sistemi
+# Yapay Zeka Destekli Yüz Tanıma ve Takip Sistemi
 
-# 🧠 Yapay Zeka Destekli Yüz Tanıma ile Giriş-Çıkış Tespit Sistemi
+## Proje Özeti
 
-Bu proje, gerçek zamanlı olarak çalışan, yapay zeka tabanlı bir **yüz tanıma, takip ve giriş-çıkış tespit sistemidir**. Sistem; kamera ya da video kaynağı üzerinden insan yüzlerini tespit eder, kimlik doğrulaması yapar, kişileri takip eder ve giriş/çıkış gibi olayları kayıt altına alır. Tek kamera veya çift kamera senaryolarında çalışacak şekilde optimize edilmiştir.
+Bu proje; derin öğrenme ve bilgisayar görüsü tekniklerini kullanarak gerçek zamanlı yüz tespiti, tanıma ve nesne takibi (tracking) gerçekleştiren entegre bir sistemdir. Sistem, özellikle güvenli alan giriş-çıkış senaryoları için tasarlanmış olup, kişilerin alanda kalma sürelerini otomatik olarak hesaplama ve loglama yeteneğine sahiptir.
 
----
+## Proje Mimarisi
 
-## 🚀 Özellikler
+Sistem, yüksek performans ve doğruluk sağlamak amacıyla katmanlı bir mimari üzerine inşa edilmiştir:
 
-- 🔍 **Yüz Tespiti:** YOLOv8 ile gerçek zamanlı yüz algılama
-- 🧬 **Yüz Tanıma:** `face_recognition` ile kimlik eşleştirme
-- 👁️‍🗨️ **Takip:** DeepSORT algoritması ile kişi bazlı takip
-- 🔄 **Giriş/Çıkış Tespiti:** Sanal çizgi ile etkileşime dayalı giriş-çıkış olayları
-- 📝 **Loglama:** Kişi ismi, ID, tarih, saat, içeride kalma süresi gibi bilgilerin kaydı
-- 🧪 **Model Optimizasyonu:** ONNX ve TensorRT ile hızlandırma
-- 🎯 **Gerçek dünya senaryosuna uygunluk:** Market, bina girişi gibi durumlarda uygulanabilir yapı
+1.  **Yüz Tespiti (Detection):** Görüntü akışındaki yüzleri belirlemek için **YOLOv8n** (Nano) modeli kullanılmaktadır.
+2.  **Yüz Tanıma (Recognition):** Tespit edilen yüzlerin kimliklendirilmesi için **face\_recognition** kütüphanesi ve **Deep Learning** tabanlı algoritmalar entegre edilmiştir.
+3.  **Nesne Takibi (Tracking):** Tanınan bireylerin hareketlerini izlemek ve benzersiz bir kimlik (Unique ID) atamak için **DeepSORT** algoritması kullanılmaktadır.
+4.  **Hız Optimizasyonu:** Gerçek zamanlı performans için model, **ONNX** formatı üzerinden **NVIDIA TensorRT** motoruna dönüştürülmüştür.
+5.  **Olay Yönetimi:** Giriş-çıkış olayları, zaman damgası ve içeride kalma süresi bilgileriyle birlikte log dosyasına kaydedilir.
 
----
+## Temel Özellikler
 
-## 🧰 Kullanılan Teknolojiler
+  * **Gerçek Zamanlı İşleme:** TensorRT entegrasyonu ile düşük gecikmeli çıkarım (inference).
+  * **Kesintisiz Takip:** Kişi arkasını dönse dahi DeepSORT ile sürekli takip ve ID yönetimi.
+  * **Sanal Sınır Etkileşimi:** OpenCV ile tanımlanan sanal "giriş" ve "çıkış" çizgileri üzerinden olay tetikleme.
+  * **Süre Analizi:** Bireylerin ilgili alanda geçirdiği sürenin otomatik hesaplanması.
+  * **Hata Yönetimi:** Kayıtlı olmayan kişilerin çıkış işlemlerinde otomatik uyarı sistemi.
 
-| Alan | Teknoloji |
-|------|-----------|
-| **Yüz Tespiti** | YOLOv8n (Ultralytics) |
-| **Yüz Tanıma** | `face_recognition`, OpenCV |
-| **Takip** | DeepSORT (Multi-Object Tracking) |
-| **Programlama Dili** | Python 3.11.9 |
-| **Kütüphaneler** | PyTorch, Torch-TensorRT, ONNX, Numpy, Pickle, OS |
-| **Donanım** | Nvidia RTX 3050 GPU |
-| **Geliştirme Ortamı** | Google Colab, VSCode, PyCharm |
+## Kullanılan Teknolojiler
 
----
+| Kategori              | Teknolojiler                                    |
+| :-------------------- | :---------------------------------------------- |
+| **Dil**               | Python                                          |
+| **AI Frameworks**     | PyTorch, TensorFlow/Keras, Ultralytics (YOLOv8) |
+| **Bilgisayar Görüsü** | OpenCV, face\_recognition, DeepSORT             |
+| **Optimizasyon**      | ONNX, NVIDIA TensorRT, CUDA, cuDNN              |
+| **Veri Analizi**      | NumPy, Pickle                                   |
 
-## 🛠️ Sistem Mimarisi
+## Model Eğitim Bilgileri
 
-1. **YOLOv8 Tabanlı Yüz Tespiti:**
-   - Roboflowdan alınan public olarak yayınlanmış birden fazla insanın farklı ışık ortamlarındaki
-yüz görüntülerini içeren veri seti ile YOLOv8n modeli eğitildi.
-   - Tespit edilen yüzler kırpılarak tanıma sistemine gönderilir.
+  * **Eğitim:** 100 epoch.
+  * **Performans Metrikleri:**
+      * Doğruluk (Precision): %97.7
+      * Duyarlılık (Recall): %96.6
+      * mAP@50: %98.9
 
-2. **Yüz Tanıma:**
-   - `face_recognition` ile tespit edilen yüzler veri tabanındaki kayıtlı yüzlerle karşılaştırılır.
-   - Eşleşme varsa kişi adı ile tanımlanır, yoksa otomatik olarak yeni bir kişi (örneğin `kisi4`) atanır.
+## Donanım Gereksinimleri
 
-3. **DeepSORT ile Takip:**
-   - Tanınan kişiye benzersiz bir takip ID’si atanır.
-   - ID ataması sonrası kişi, yüzü görünmese bile takip edilebilir.
-   - Takip edilen kişinin en alt orta noktası (mor nokta) kullanılarak çizgi temas kontrolü yapılır.
-
-4. **Giriş-Çıkış Tespiti:**
-   - Video üzerine yerleştirilen sanal çizgiler (yeşil=giriş, kırmızı=çıkış) ile kişi çerçevesinin teması kontrol edilir.
-   - Giriş yapıp çıkmayan kişilere özel uyarı sistemi vardır (120 frame boyunca görünmezse sistemden silinir).
-
-5. **Loglama Sistemi:**
-   - `loglama.txt` dosyasına kişi adı, takip ID’si, tarih/saat, içeride kalma süresi gibi bilgiler kayıt edilir.
-   - Terminal üzerinden de canlı olarak kullanıcı bilgilendirmesi yapılır.
+  * **GPU:** NVIDIA RTX 3050 veya üzeri (CUDA & TensorRT desteği için).
+  * **İşlemci:** Yüksek performanslı hesaplama birimi.
